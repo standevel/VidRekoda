@@ -1,0 +1,70 @@
+ /* @font-face {
+   font-family: 'Material Icons';
+   font-style: normal;
+   font-weight: 400;
+   src: url(https://example.com/MaterialIcons-Regular.eot);
+   //* For IE6-8 
+   src: local('Material Icons'),
+     local('MaterialIcons-Regular'),
+     url(https://example.com/MaterialIcons-Regular.woff2) format('woff2'),
+     url(https://example.com/MaterialIcons-Regular.woff) format('woff'),
+     url(https://example.com/MaterialIcons-Regular.ttf) format('truetype');
+ }
+ */
+
+
+
+
+ .actions {
+   background-color: black;
+   width: fit-content;
+   padding: 10px;
+   border-radius: 50px;
+   display: flex;
+   gap: 10PX;
+ }
+
+ .red {
+   background-color: red;
+ }
+
+
+ .icon-btn {
+   border-radius: 20px;
+   cursor: pointer;
+   padding-top: 7px;
+ }
+
+ .hide {
+   display: none;
+ }
+
+ .blue {
+   background-color: yellowgreen
+ }
+
+
+
+
+ .bg-dark {
+   background-color: black;
+ }
+
+ .white {
+   color: white;
+   padding: 10px;
+ }
+
+
+
+ .selected {
+   border: #0ff000 2 solid;
+   background-color: white;
+   color: white;
+ }
+
+ .timer {
+   font-size: larger;
+   font-weight: bolder;
+   color: ghostwhite;
+ }

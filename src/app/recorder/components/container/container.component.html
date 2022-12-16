@@ -1,0 +1,27 @@
+<mat-toolbar color="primary">
+  <span>Awesome Recorder</span>
+</mat-toolbar>
+<app-fab (choiceEvent)="chooseType($event)"></app-fab>
+
+<div class="row" *ngIf="stream">
+  <div class="col-md-8" *ngIf="stream">
+    <app-player [stream]="stream"></app-player>
+    <div class="row" *ngIf="stopped">
+      <div class="m-4 " id="download">
+        <button onclick="downloadRecording()" class=" icon-btn btn btn-info m-2">
+          <i class="material-icons">file_download</i>
+        </button>
+        <button onclick="shareRecording()" class="icon-btn btn btn-dark  m-2">
+          <i class="material-icons">share</i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <!-- <app-settings-form></app-settings-form> -->
+    <!-- This section might be used to render editing controls -->
+  </div>
+</div>
+<app-controls></app-controls>
+
+<app-screen *ngIf="type == 'screen'" (emitStream)="getStream($event)"></app-screen>
