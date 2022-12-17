@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-player',
@@ -9,17 +10,32 @@ import { MatMenuTrigger } from '@angular/material/menu';
 export class PlayerComponent implements OnInit {
   playing = true;
   timer: any;
-  @Input() stream!: MediaStream;
+  @Input() streamSub!: Observable<MediaStream>;
+  stream!: MediaStream;
+  @Input() videoUrlSub!: Observable<string>;
   constructor() { }
 
   ngOnInit() {
     // if (this.stream) {
     const video = document.querySelector('video');
-    video!.srcObject = this.stream;
-    video!.autoplay = true;
+
+    this.streamSub?.subscribe(stream => {
+      console.log('stream at player: ', stream);
+      video!.srcObject = stream;
+      video!.autoplay = true;
+      video!.muted = true
+
+      // this.videoUrlSub.next('');
+    })
+
+
     console.log('video stream: ', this.stream);
     // }
-
+    this.videoUrlSub?.subscribe(value => {
+      console.log('vid url:', value);
+      video!.src = value;
+      video!.autoplay = true;
+    })
     this.hideControls();
     this.getVideoEl()?.addEventListener("timeupdate", (e: any) => {
       // console.log('timeupdate event: ', e)
