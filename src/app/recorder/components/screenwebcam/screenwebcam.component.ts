@@ -42,8 +42,15 @@ export class ScreenwebcamComponent implements OnInit {
 
         }).catch(err => {
           setTimeout(() => {
-            webcamVideoRef.requestPictureInPicture();
-          }, 3000);
+            console.log('pip error: ', err);
+            if (!document.pictureInPictureElement) {
+              webcamVideoRef?.requestPictureInPicture();
+            }
+            // else if (document.pictureInPictureEnabled) {
+            //   webcamVideoRef?.requestPictureInPicture();
+            // }
+            // webcamVideoRef.requestPictureInPicture();
+          }, 5000);
         });
 
       }

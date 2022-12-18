@@ -171,7 +171,12 @@ export class PlayerComponent implements OnInit {
     document.getElementById('speedBtn')?.classList?.toggle("show");
   }
   pipBtn() {
-    document.querySelector('video')?.requestPictureInPicture();
+    const video = document.querySelector('video');
+    if (document.pictureInPictureElement) {
+      document.exitPictureInPicture();
+    } else if (document.pictureInPictureEnabled) {
+      video?.requestPictureInPicture();
+    }
   }
   getVideoEl() {
     return document.querySelector('video');

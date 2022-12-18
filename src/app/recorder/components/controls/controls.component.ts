@@ -76,7 +76,7 @@ export class ControlsComponent implements OnInit {
   }
   countTimer() {
     this.timer += 1;
-    console.log('counter: ', typeof this.timer,);
+    // console.log('counter: ', typeof this.timer,);
 
     let hourStr = '';
     let minuteStr = '';
@@ -94,7 +94,7 @@ export class ControlsComponent implements OnInit {
       secondStr = "0" + seconds;
 
     this.counterMessage = hourStr + ":" + minuteStr + ":" + secondStr;
-    console.log('message: ', this.counterMessage);
+    // console.log('message: ', this.counterMessage);
 
   }
 }
