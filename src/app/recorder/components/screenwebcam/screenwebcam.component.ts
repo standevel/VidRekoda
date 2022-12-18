@@ -37,7 +37,7 @@ export class ScreenwebcamComponent implements OnInit {
       webcamVideoRef.play();
 
       webcamVideoRef.onloadeddata = async (evt) => {
-        console.log('event: ', evt)
+        console.log('event on loaded metadata: ', evt)
         webcamVideoRef.requestPictureInPicture().then((pip) => {
 
         }).catch(err => {
@@ -56,7 +56,7 @@ export class ScreenwebcamComponent implements OnInit {
 
       screen.getTracks()[0].onended = (evt) => {
         console.log('screen share stopped: ', evt);
-        alert('screen recording has stopped. click on stop button to preview your recording for downloads')
+        alert('screen recording has stopped. Click on stop button to preview your recording for downloads')
         // this.emitStop.emit('stop');
         webcamVideoRef.pause();
         // webcamVideoRef.hidden = true;
