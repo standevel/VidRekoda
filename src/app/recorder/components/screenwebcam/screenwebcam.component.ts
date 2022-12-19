@@ -36,22 +36,17 @@ export class ScreenwebcamComponent implements OnInit {
       webcamVideoRef.width = 0;
       webcamVideoRef.play();
 
-      webcamVideoRef.onloadeddata = async (evt) => {
-        console.log('event on loaded metadata: ', evt)
-        webcamVideoRef.requestPictureInPicture().then((pip) => {
 
-        }).catch(err => {
-          setTimeout(() => {
-            console.log('pip error: ', err);
-            if (!document.pictureInPictureElement) {
-              webcamVideoRef?.requestPictureInPicture();
-            }
-            // else if (document.pictureInPictureEnabled) {
-            //   webcamVideoRef?.requestPictureInPicture();
-            // }
-            // webcamVideoRef.requestPictureInPicture();
-          }, 5000);
-        });
+      webcamVideoRef.onloadedmetadata = async (evt) => {
+        console.log('event on loaded metadata: ', evt)
+
+
+        if (document.pictureInPictureElement) {
+          document.exitPictureInPicture();
+        } else {
+          webcamVideoRef?.requestPictureInPicture();
+        }
+
 
       }
 

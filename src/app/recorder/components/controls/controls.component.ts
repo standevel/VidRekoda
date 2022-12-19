@@ -15,10 +15,8 @@ export class ControlsComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    // this.timerInterval = setInterval(this.countTimer, 1000);
     this.timerInterval = setInterval(() => {
       this.timer += 1;
-      console.log('counter: ', typeof this.timer, this.timer);
 
       let hourStr = '';
       let minuteStr = '';
@@ -27,16 +25,13 @@ export class ControlsComponent implements OnInit {
       let hour = Math.floor(this.timer / 3600)
       let minute = Math.floor((this.timer - hour * 3600) / 60)
       let seconds = this.timer - (hour * 3600 + minute * 60);
-      console.log(hour, minute, seconds)
-      // if (hour < 10 )
+
       hour < 10 ? hourStr = "0" + hour : hourStr = hour + '';
-      // if (minute < 10)
       minute < 10 ? minuteStr = "0" + minute : minuteStr = '' + minute;
-      // if (seconds < 10)
       seconds < 10 ? secondStr = "0" + seconds : secondStr = '' + seconds;
 
       this.counterMessage = hourStr + ":" + minuteStr + ":" + secondStr;
-      console.log('message: ', this.counterMessage)
+
     }, 1000);
   }
   resumeRecording() {
@@ -44,7 +39,6 @@ export class ControlsComponent implements OnInit {
     this.isPaused = false;
     this.timerInterval = setInterval(() => {
       this.timer += 1;
-      console.log('counter: ', typeof this.timer, this.timer);
 
       let hourStr = '';
       let minuteStr = '';
@@ -54,15 +48,15 @@ export class ControlsComponent implements OnInit {
       let minute = Math.floor((this.timer - hour * 3600) / 60)
       let seconds = this.timer - (hour * 3600 + minute * 60);
       console.log(hour, minute, seconds)
-      // if (hour < 10 )
+
       hour < 10 ? hourStr = "0" + hour : hourStr = hour + '';
-      // if (minute < 10)
+
       minute < 10 ? minuteStr = "0" + minute : minuteStr = '' + minute;
-      // if (seconds < 10)
+
       seconds < 10 ? secondStr = "0" + seconds : secondStr = '' + seconds;
 
       this.counterMessage = hourStr + ":" + minuteStr + ":" + secondStr;
-      console.log('message: ', this.counterMessage)
+
     }, 1000);
   }
   pauseRecording() {
@@ -94,7 +88,6 @@ export class ControlsComponent implements OnInit {
       secondStr = "0" + seconds;
 
     this.counterMessage = hourStr + ":" + minuteStr + ":" + secondStr;
-    // console.log('message: ', this.counterMessage);
 
   }
 }
