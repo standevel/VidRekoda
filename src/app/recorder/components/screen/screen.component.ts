@@ -19,41 +19,25 @@ export class ScreenComponent implements OnInit {
   }
   async startMedia() {
     const screen = await navigator.mediaDevices.getDisplayMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true }, });
-    // const webcam = await navigator.mediaDevices.getUserMedia({ video: { echoCancellation: true, noiseSuppression: true }, });
     const micStream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true }, });
 
     // videoRefs
     const screenShareVideoRef: HTMLVideoElement = document.createElement('video');
     // let webcamVideoRef = document.createElement('video');
     screenShareVideoRef.srcObject = screen;
-    // webcamVideoRef.srcObject = webcam;
-    // webcamVideoRef.muted = true;
-    // webcamVideoRef.play();
-    // screenShareVideoRef.play();
 
-    // document.getElementById('holder')?.append(screenShareVideoRef);
-    // document.getElementById('holder')?.append(webcamVideoRef);
-    // webcamVideoRef.width = 0;
-    // webcamVideoRef.onloadeddata = async (evt) => {
-    //   console.log('event: ', evt)
-    //   const pip = await webcamVideoRef.requestPictureInPicture();
-
-    // }
-
-    const merger = new VideoStreamMerger();
-    merger.width = 1280; merger.height = 720;
 
     console.log('stream in screen: ', navigator.mediaDevices.getSupportedConstraints());
     // this.emitStream.emit(screen)
-    this.stream = new MediaStream([...screen.getTracks(), ...micStream.getTracks()])
+    // this.stream = new MediaStream([ ...micStream.getTracks(),...screen.getTracks(),])
 
     //   this.stream = merger.result;
-    this.emitStream.emit(this.stream);
+    this.emitStream.emit(new MediaStream([...micStream.getTracks(), ...screen.getTracks(),]));
 
     screen.getTracks()[0].onended = (evt) => {
       console.log('screen share stopped: ', evt);
       alert('screen recording has stopped. click on stop button to preview your recording for downloads')
-      // this.emitStop.emit('stop');
+      this.emitStop.emit('stop');
       // webcamVideoRef.pause();
       // webcamVideoRef.hidden = true;
     }

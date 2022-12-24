@@ -27,6 +27,7 @@
     "@types/recordrtc": "^5.6.10",
     "bootstrap": "^5.2.3",
     "file-saver": "^2.0.5",
+    "fix-webm-duration": "^1.0.5",
     "recordrtc": "^5.6.2",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",

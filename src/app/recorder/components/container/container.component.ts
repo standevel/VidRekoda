@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { saveAs } from 'file-saver';
+import fixWebmDuration from 'fix-webm-duration';
 import { Subject } from 'rxjs';
 import { RecordingDialogComponent } from '../recording-dialog/recording-dialog.component';
 
@@ -21,6 +22,10 @@ export class ContainerComponent implements OnInit {
   streamSub = new Subject<MediaStream>();
   videoUrlSub: Subject<string> = new Subject();
   videoBlob!: Blob;
+  serverPushInterval!: NodeJS.Timer;
+  STREAM_NAME!: string | number;
+  startTime!: number;
+  stopTime!: number;
   constructor(private dialog: MatDialog) { }
 
   ngOnInit() {
@@ -52,6 +57,8 @@ export class ContainerComponent implements OnInit {
 
   }
   startRecording() {
+    this.startTime = performance.now();
+    this.STREAM_NAME = this.getName();
     console.log('starting recording called: ', this.stream);
 
     this.recorder = new MediaRecorder(this.stream);
@@ -67,38 +74,45 @@ export class ContainerComponent implements OnInit {
 
     })
 
-    // this.recorder.onstart = (evt) => {
-    //   console.log('recording started: ', evt);
-    //   // display controls for pause and stop
-    //   this.isRecording = true;
-    // }
-    // this.recorder.onstop = (evt) => {
-    //   console.log('recording stopped: ', evt);
-    //   this.isRecording = false;
-    //  };
+
     this.recorder.start();
-    // console.log('recorder state: ', this.recorder.state);
-    // if (Array.isArray(this.stream)) {
-    // this.recorder = new RecordRTC(this.stream);
-    // this.recorder.startRecording();
-    // this.isRecording = true;
-    // } else {
-    //   // this.recorder = new RecordRTC(this.stream)
-    //   this.recorder = new RecordRTC(this.stream, { type: 'video', recorderType: MediaStreamRecorder });
-    //   this.recorder.startRecording();
-    //   console.log('start recording');
-    //   this.isRecording = true;
-    // }
+
+    // this.serverPushInterval = setInterval(() => {
+    //   if (this.recorder!.state == 'recording') {
+    //     this.recorder?.requestData();
+    //   }
+    //   this.recorder!.ondataavailable = (evt) => {
+    //     this.chunks.push(evt.data);
+    //     const blob = new Blob(this.chunks, { type: "video/mp4;" });
+    //     // this.sendFile(evt.data)
+    //     // this.downloadRecording(blob);
+    //   }
+    // }, 4000)
+
   }
+  sendFile(file: Blob) {
+    try {
+      console.log('sending file to server');
+
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('name', this.STREAM_NAME.toString());
+      // formData.append('chunk', chunkNumber);
+      fetch('http://localhost:4000/upload', {
+        method: 'PUT',
+        body: formData
+      });
+    } catch (error) {
+      console.log('error: ', error);
+
+    }
+  }
+  getName() {
+    return +new Date()
+  }
+
   stopRecording() {
-    // this.recorder?.stopRecording(() => {
-    //   this.videoBlob = this.recorder.getBlob();
-    //   console.log(' blob: ', this.videoBlob);
-
-    //   const videoUrl = URL.createObjectURL(this.videoBlob);
-
-    //   this.videoUrlSub.next(videoUrl);
-    // });
+    this.stopTime = performance.now();
     console.log('stop recording called');
 
     this.recorder?.stop();
@@ -106,15 +120,26 @@ export class ContainerComponent implements OnInit {
     this.showPreview = true;
     this.recorder!.ondataavailable = async (event) => {
       console.log('stream recorded: ', event)
-      this.chunks.push(event.data);
+      if (event.data)
+        this.chunks.push(event.data);
 
       const videoUrl = URL.createObjectURL(event.data);
       this.videoUrlSub.next(videoUrl);
-      this.videoBlob = new Blob(this.chunks, { type: "video/mp4;" });
 
+      const blob = new Blob(this.chunks, { type: "video/mp4;" });
+
+      const duration = this.stopTime - this.startTime;
+      console.log('duration: ', duration);
+
+      this.videoBlob = await this.patchBlob(blob, duration);
       this.chunks = [];
       // this.stream.getTracks()[0].stop();
-      this.type = ''
+      this.type = '';
+      setTimeout(() => {
+        clearInterval(this.serverPushInterval);
+      }, 4000);
+
+      this.stream.getTracks()[0].stop();
     }
 
     // });
@@ -122,13 +147,17 @@ export class ContainerComponent implements OnInit {
 
 
   }
-
+  patchBlob(blob: Blob, duration: number): Promise<Blob> {
+    return new Promise(resolve => {
+      fixWebmDuration(blob, duration, newBlob => resolve(newBlob));
+    });
+  }
   resumeRecording() {
     // this.recorder?.resumeRecording();
     this.recorder?.resume();
   }
-  downloadRecording() {
-    saveAs(this.videoBlob, "awesomevideo.mp4");
+  downloadRecording(blob?: Blob) {
+    saveAs(blob ? blob : this.videoBlob, "awesomevideo.mp4");
   }
 
   shareRecording() { }
