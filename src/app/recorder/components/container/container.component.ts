@@ -126,7 +126,7 @@ export class ContainerComponent implements OnInit {
       const videoUrl = URL.createObjectURL(event.data);
       this.videoUrlSub.next(videoUrl);
 
-      this.videoBlob = new Blob(this.chunks, { type: "video/webm;" });
+      this.videoBlob = new Blob(this.chunks, { type: "video/mp4;" });
 
       const duration = this.stopTime - this.startTime;
       console.log('duration: ', duration);
