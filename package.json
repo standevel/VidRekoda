@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
   "name": "vidrekoda",
+=======
+  "name": "awesomerecorder",
+>>>>>>> 3f7a3ecb05bc0ff119c819ced8ab467d6ad0394b
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
