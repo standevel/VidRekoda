@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 @import '@angular/material/theming';
-=======
-@import '~@angular/material/theming';
->>>>>>> 3f7a3ecb05bc0ff119c819ced8ab467d6ad0394b
 @include mat-core();
 $my-app-primary: mat-palette($mat-blue-grey);
 $my-app-accent: mat-palette($mat-pink, 500, 900, A100);
@@ -15,8 +11,4 @@ $my-app-theme: mat-light-theme($my-app-primary, $my-app-accent, $my-app-warn);
     $alternate-accent: mat-palette($mat-yellow, 400);
     $alternate-theme: mat-light-theme($alternate-primary, $alternate-accent);
     @include angular-material-theme($alternate-theme);
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 3f7a3ecb05bc0ff119c819ced8ab467d6ad0394b
