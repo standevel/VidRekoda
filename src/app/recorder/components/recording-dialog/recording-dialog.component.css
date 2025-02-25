@@ -1,0 +1,7 @@
+.counter {
+  font-size: 50px
+}
+
+::ng-deep .custom-dialog>mat-dialog-container {
+  background-color: transparent
+}

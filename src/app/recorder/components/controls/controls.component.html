@@ -1,0 +1,23 @@
+<div class="actions fixed-bottom text-center" id="actions">
+  <span id="timer" class="mt-2 timer">{{counterMessage}}</span>
+  <!-- <button title="starting recording" id="start-btn" class="start icon-btn red" onclick="processRecording()">
+    <i class="material-icons">fiber_manual_record</i>
+  </button> -->
+  <button *ngIf="isPaused" title="Resume Recording" id="continue-btn" class="stop icon-btn bg-light "
+    (click)="resumeRecording()">
+    <i class="material-icons">
+      fiber_manual_record
+    </i>
+  </button>
+  <button *ngIf="!isPaused" title="Pause Recording" id="pause-btn" class="pause icon-btn  blue"
+    (click)="pauseRecording()">
+    <i class="material-icons">
+      pause_circle
+    </i>
+  </button>
+  <button title="Stop Recordin" id="stop-btn" class="stop icon-btn  red" (click)="stopRecording()">
+    <i class="material-icons">
+      stop_circle
+    </i>
+  </button>
+</div>

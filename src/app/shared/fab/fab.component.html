@@ -1,0 +1,25 @@
+<div class="fab-container">
+  <div class="fab shadow">
+    <div class="fab-content">
+      <span class="material-icons">
+        radio_button_checked
+      </span>
+    </div>
+
+  </div>
+  <div class="sub-button shadow" (click)="chooseOption('screen')">
+    <span class="material-icons">tv</span>
+  </div>
+  <div class="sub-button shadow" (click)="chooseOption('webcam')">
+    <span class="material-icons">videocam</span>
+  </div>
+  <div class="sub-button shadow" (click)="chooseOption('screenwebcam')">
+    <span class="material-icons">co_present </span>
+  </div>
+  <span (click)="openSettings()" type="button" class="sub-button shadow">
+    <span class="material-icons">settings</span>
+  </span>
+
+
+
+</div>

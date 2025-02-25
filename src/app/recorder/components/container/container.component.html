@@ -1,0 +1,46 @@
+<mat-toolbar color="primary">
+  <span>Awesome Recorder</span>
+</mat-toolbar>
+<app-fab (choiceEvent)="chooseType($event)"></app-fab>
+
+<div class="row" *ngIf="showPreview">
+  <div class="col-md-8">
+    <app-player *ngIf="showPreview" [videoUrlSub]="videoUrlSub"></app-player>
+    <div class="row">
+      <div class="m-4 " id="download">
+        <button (click)="downloadRecording()" class=" icon-btn btn btn-info m-2">
+          <i class="material-icons">file_download</i>
+        </button>
+        <button (click)="shareRecording()" class="icon-btn btn btn-dark  m-2">
+          <i class="material-icons">share</i>
+        </button>
+        <button (click)="editRecording()" class="icon-btn btn btn-dark  m-2">
+          <i class="material-icons">edit</i>
+        </button>
+        <button (click)="editRecording()" class="icon-btn btn btn-info  m-2">
+          <img src="assets/icons8-add-text-24.png" alt="Add Text">
+        </button>
+        <button (click)="addText()" class="icon-btn btn btn-info  m-2">
+          <i class="material-icons">merge</i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <!-- <app-settings-form></app-settings-form> -->
+    <!-- This section might be used to render editing controls -->
+  </div>
+</div>
+
+<app-player *ngIf="type == 'webcam'" [streamSub]="streamSub"></app-player>
+
+<app-controls *ngIf="isRecording" (emitAction)="getRecordingActions($event)"></app-controls>
+
+<app-screen *ngIf="type == 'screen'" (emitStream)="getStream($event)"
+  (emitStop)="getRecordingActions($event)"></app-screen>
+
+<app-screenwebcam *ngIf="type === 'screenwebcam'" (emitStream)="getStream($event)"
+  (emitStop)="getRecordingActions($event)"></app-screenwebcam>
+
+<app-webcam *ngIf="type === 'webcam'" (emitStream)="getStream($event)"
+  (emitStop)="getRecordingActions($event)"></app-webcam>
