@@ -90,6 +90,9 @@ export class ContainerComponent implements OnInit {
     // }, 4000)
 
   }
+  editRecording(file?: Blob) {
+    console.log('editing recording: ', file ?? this.videoBlob);
+  }
   sendFile(file: Blob) {
     try {
       console.log('sending file to server');
@@ -123,15 +126,22 @@ export class ContainerComponent implements OnInit {
       if (event.data)
         this.chunks.push(event.data);
 
-      const videoUrl = URL.createObjectURL(event.data);
-      this.videoUrlSub.next(videoUrl);
+
 
       this.videoBlob = new Blob(this.chunks, { type: "video/mp4;" });
 
       const duration = this.stopTime - this.startTime;
       console.log('duration: ', duration);
 
-      // this.videoBlob = await this.patchBlob(blob, duration);
+      this.videoBlob = await this.patchBlob(this.videoBlob, duration);
+
+      const vidEl = document.createElement('video');
+      const videoUrl = URL.createObjectURL(this.videoBlob);
+      this.videoUrlSub.next(videoUrl);
+      vidEl.src = videoUrl;
+      vidEl.onloadedmetadata = (meta) => {
+        console.log('vidEl duration: ', vidEl.duration, 'meta', meta);
+      }
       this.chunks = [];
       // this.stream.getTracks()[0].stop();
       this.type = '';
@@ -147,10 +157,11 @@ export class ContainerComponent implements OnInit {
 
 
   }
-  patchBlob(blob: Blob, duration: number): Promise<Blob> {
-    return new Promise(resolve => {
-      fixWebmDuration(blob, duration, newBlob => resolve(newBlob));
-    });
+  addText() { }
+  async patchBlob(blob: Blob, duration: number): Promise<Blob> {
+    console.log('duration for patching: ', duration)
+    return await fixWebmDuration(blob, duration)
+
   }
   resumeRecording() {
     // this.recorder?.resumeRecording();

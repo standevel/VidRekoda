@@ -18,7 +18,10 @@ export class PlayerComponent implements OnInit {
   ngOnInit() {
     // if (this.stream) {
     const video = document.querySelector('video');
-
+    if (video)
+      video.onloadedmetadata = (meta) => {
+        console.log('metadata loaded: ', video?.duration, 'meta', meta);
+      }
     this.streamSub?.subscribe(stream => {
       console.log('stream at player: ', stream);
       video!.srcObject = stream;
